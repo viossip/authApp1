@@ -161,6 +161,7 @@ public class MainLoginActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
+            String  secret;
 
             try {
                 // Simulate network access.
@@ -168,12 +169,18 @@ public class MainLoginActivity extends AppCompatActivity {
             } catch (InterruptedException e) {
                 return false;
             }
+           // String sec;
 
             for (String credential : CREDENTIALS) {
                 String[] creds = credential.split(":");
                 if (creds[0].equals(mUsername)) {
-                    return  creds[1].equals(mPassword) &&
-                            creds[2].equals(secretAuth.processSecret(secretAuth.getSecret(getApplicationContext())));
+                    secret = secretAuth.getSecret(getApplicationContext());
+                    if (secret != null){
+                        return  creds[1].equals(mPassword) &&
+                                creds[2].equals(secretAuth.processSecret(secret));
+                    }
+                    else
+                        return false;
                 }
             }
 
