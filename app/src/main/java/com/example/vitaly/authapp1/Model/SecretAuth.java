@@ -12,13 +12,15 @@ import java.security.NoSuchAlgorithmException;
 
 public class SecretAuth {
 
+    private static final String ENCRYPT = "MD5";
+
     public static String getSecret(Context context) {
 
         String secret = null;
         ConnectivityManager mngr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netI = mngr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo ni = mngr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
-        if (netI.isConnected()) {
+        if (ni.isConnected()) {
             final WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
             final WifiInfo ci = wm.getConnectionInfo();
             if (ci != null && !TextUtils.isEmpty(ci.getSSID())) {
@@ -30,7 +32,7 @@ public class SecretAuth {
 
     public static String processSecret(String secret) {
         try {
-            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+            MessageDigest digest = java.security.MessageDigest.getInstance(ENCRYPT);
             digest.update(secret.getBytes());
             byte messageDigest[] = digest.digest();
 
