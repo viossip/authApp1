@@ -25,7 +25,8 @@ public class MainLoginActivity extends AppCompatActivity {
     private static final String[] CREDENTIALS = new String[]{
             "admin:1234:d0ecd2c7db75e999e256d0b396f995e1",
             "user:4321:e7096f6143aff9ceb073b14872b1659d",
-            "sudo:1111:a7d134af6240efabcd1bf548c757a4a1"
+            "sudo:1111:a7d134af6240efabcd1bf548c757a4a1",
+            "su:11:67fcc9b131f72ae8d51196c3c1fe358"
     };
 
     private UserLoginTask mAuthTask = null;
@@ -47,7 +48,7 @@ public class MainLoginActivity extends AppCompatActivity {
         mEmailView = findViewById(R.id.username);
         mPasswordView = findViewById(R.id.password);
 
-        Button mUserSignInButton = findViewById(R.id.email_sign_in_button);
+        Button mUserSignInButton = findViewById(R.id.user_sign_in_button);
         mUserSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,7 +110,7 @@ public class MainLoginActivity extends AppCompatActivity {
     }
 
     private boolean isPasswordValid(String password) {
-        return password.length() > 3;
+        return password.length() > 3 || password.length() == 2;
     }
 
     /**
@@ -145,7 +146,7 @@ public class MainLoginActivity extends AppCompatActivity {
 
 
     /**
-     * Asynchronous login/registration task used to authenticate the user.
+     * Asynchronous login task used to authenticate the user.
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
@@ -164,12 +165,10 @@ public class MainLoginActivity extends AppCompatActivity {
             String  secret;
 
             try {
-                // Simulate network access.
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 return false;
             }
-           // String sec;
 
             for (String credential : CREDENTIALS) {
                 String[] creds = credential.split(":");
